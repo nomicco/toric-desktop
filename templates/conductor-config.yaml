@@ -23,7 +23,11 @@ network:
           - "###DEFINED_IN_KANGAROO_CONFIG###"
   target_arc_factor: 1
   report: none
-  advanced: ~
+  advanced:
+    tx5Transport:
+      signalAllowPlainText: true
+    irohTransport:
+      relayAllowPlainText: true
 db_sync_strategy: Resilient
 tuning_params: ~
 tracing_scope: ~

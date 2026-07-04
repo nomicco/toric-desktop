@@ -1,21 +1,27 @@
 import { defineConfig } from './src/main/defineConfig';
 
+// Toric — Kangaroo-Electron main-0.6
+// Pi serves bootstrap (http) + signal (ws) via kitsune2-bootstrap-srv.
+// relayUrl is the iroh relay — a separate service from the sbd signal.
+// Holochain's public relay is fine to start; run iroh-relay on the Pi
+// later if you want zero external dependencies. NOTE (from template
+// README): changing these URLs after deployment partitions the network.
 export default defineConfig({
-  appId: 'org.holochain.kangaroo-electron',
-  productName: 'Holochain Kangaroo Electron',
-  version: '0.1.0',
+  appId: 'network.toric.app',
+  productName: 'Toric',
+  version: '0.1.0',            // patch bumps share data; minor/major isolate
   macOSCodeSigning: false,
   windowsEVCodeSigning: false,
   fallbackToIndexHtml: true,
   autoUpdates: true,
   systray: true,
   passwordMode: 'password-optional',
-  bootstrapUrl: 'https://dev-test-bootstrap2.holochain.org/',
-  signalUrl: 'wss://dev-test-bootstrap2.holochain.org/',
-  relayUrl: "https://iroh-relay-hc.holochain.org/",
+  bootstrapUrl: 'http://192.168.1.169:8888',   // Pi — pin this IP statically
+  signalUrl: 'ws://192.168.1.169:8888',        // same srv, ws path
+  relayUrl: 'https://iroh-relay-hc.holochain.org/',
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
-    holochainVersion: '0.6.2-rc.0',
+    holochainVersion: '0.6.2-rc.0',  // runs hdk 0.6.1 / hdi 0.7.1 wasm
     holochain: {
       sha256: {
         'x86_64-unknown-linux-gnu':
