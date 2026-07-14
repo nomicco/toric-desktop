@@ -1,6 +1,7 @@
 import {
   app,
   BrowserWindow,
+  clipboard,
   dialog,
   ipcMain,
   IpcMainInvokeEvent,
@@ -94,6 +95,11 @@ const RUN_OPTIONS = validateArgs(kangarooCli.opts());
 
 // Check whether lair is initialized or not and if not, decide based on the config
 // file whether or not to show the splashscreen or use a default password
+
+// No GPU path on this UI — force software rendering. Prevents the
+// ANGLE/EGL init-failure cascade (and dead GPU process) on Linux
+// boxes without working hardware acceleration.
+app.disableHardwareAcceleration();
 
 if (!app.isPackaged) {
   app.setName(KANGAROO_CONFIG.appId + '-dev');
@@ -214,6 +220,7 @@ app.whenReady().then(async () => {
    */
   // ------------------------------------------------------------------------------------
   ipcMain.handle('sign-zome-call', handleSignZomeCall);
+  ipcMain.handle('copy-to-clipboard', (_e, text: string) => { clipboard.writeText(text); });
   ipcMain.handle('exit', () => {
     app.exit(0);
   });

@@ -7,3 +7,7 @@ contextBridge.exposeInMainWorld('__HC_ZOME_CALL_SIGNER__', {
   signZomeCall: (zomeCall: CallZomeRequest) =>
     ipcRenderer.invoke('sign-zome-call', zomeCall),
 });
+
+contextBridge.exposeInMainWorld('__TORIC_CLIPBOARD__', {
+  copyText: (text: string) => ipcRenderer.invoke('copy-to-clipboard', text),
+});

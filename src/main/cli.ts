@@ -52,8 +52,7 @@ export function validateArgs(args: CliOpts): RunOptions {
   if (args.relayUrl && typeof args.relayUrl !== 'string') {
     throw new Error('The --relay-url argument must be of type string.');
   }
-  console.log('ICE URLS arg: ', args.iceUrls);
-  console.log('ICE URLS arg type: ', typeof args.iceUrls);
+  // --ice-urls CLI override is optional; absent ⇒ KANGAROO_CONFIG.iceUrls.
   if (args.iceUrls && typeof args.iceUrls !== 'string') {
     throw new Error('The --ice-urls argument must be of type string.');
   }

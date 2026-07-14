@@ -1,11 +1,9 @@
 import { defineConfig } from './src/main/defineConfig';
 
 // Toric — Kangaroo-Electron main-0.6
-// Pi serves bootstrap (http) + signal (ws) via kitsune2-bootstrap-srv.
-// relayUrl is the iroh relay — a separate service from the sbd signal.
-// Holochain's public relay is fine to start; run iroh-relay on the Pi
-// later if you want zero external dependencies. NOTE (from template
-// README): changing these URLs after deployment partitions the network.
+// Pi serves all three network services: bootstrap (http), signal (ws),
+// and iroh relay (plain http on :3340 — self-hosted, --dev mode).
+// NOTE: changing these URLs after deployment partitions the network.
 export default defineConfig({
   appId: 'network.toric.app',
   productName: 'Toric',
@@ -16,9 +14,12 @@ export default defineConfig({
   autoUpdates: true,
   systray: true,
   passwordMode: 'password-optional',
-  bootstrapUrl: 'http://192.168.1.169:8888',   // Pi — pin this IP statically
-  signalUrl: 'ws://192.168.1.169:8888',        // same srv, ws path
-  relayUrl: 'https://iroh-relay-hc.holochain.org/',
+  // All three network services on the Pi — zero external dependencies.
+  // IP statically pinned in /etc/dhcpcd.conf; changing any URL after
+  // deployment partitions the network.
+  bootstrapUrl: 'http://192.168.1.169:8888',
+  signalUrl: 'ws://192.168.1.169:8888',
+  relayUrl: 'http://192.168.1.169:3340',       // self-hosted iroh-relay (--dev = plain http)
   iceUrls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'],
   bins: {
     holochainVersion: '0.6.2-rc.0',  // runs hdk 0.6.1 / hdi 0.7.1 wasm
